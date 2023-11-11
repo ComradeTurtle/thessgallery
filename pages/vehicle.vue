@@ -2,24 +2,29 @@
 const route = useRoute();
 const files = useState("files");
 const categories = useState("categories");
-const category = route.query.category;
+const category = route.query.category.split('-')[0];
 const categoryObj = categories.value.find((f) => f.name === category);
 const ourFiles = files.value.filter((f) => f.category === category);
 
+for (let i = 0; i < ourFiles.length; i++) {
+  ourFiles[i].inx = i;
+}
+
 const vModalDisplay = ref(false);
 const vModalRef = ref(null);
+const vModalCarousel = ref(null);
 </script>
 
 <template>
   <Grid columns="1" rows="3" mdColumns="3" class="gap-2 m-8">
     <div v-for="f in ourFiles">
-      <div class="hvr-reveal rounded" @click="vModalDisplay = true; vModalref = f;">
+      <div class="hvr-reveal rounded" @click="vModalDisplay = true;">
         <NuxtImg loading="lazy" :src="f.url" />
       </div>
-      <UModal fullscreen prevent-close v-model="vModalDisplay">
+      <UModal prevent-close v-model="vModalDisplay" :ui="{ overlay: {background: 'backdrop-blur bg-dark opacity-40'}}">
         <Flex column justify="center" items="center" class="p-8">
 
-          <Carousel class="max-w-screen">
+          <Carousel ref="vModalCarousel" class="max-w-screen" :wrap-around="true" @init="vModalCarousel[route.query.category.split('-')[1]].slideTo(f.inx)">
             <Slide v-for="g in ourFiles" :key="g">
               <NuxtImg loading="lazy" style="max-height: 60vh;" :src="g.url" />
             </Slide>
@@ -29,7 +34,7 @@ const vModalRef = ref(null);
               <Pagination />
             </template>
           </Carousel>
-          <h1 class="text-2xl text-center mt-8">Πληροφορίες οχήματος εδώ <br>Μπλα μπλα μπλα</h1>
+          <h1 class="text-xl text-center mt-4 mb-2 bg-gray-200 bg-opacity-5 border-1 border border-gray-500 rounded p-6">Αριθμός οχήματος: 506<br>Γραμμή: 27 - Μετάβαση<br>Ημερομηνία: 09/11/2023</h1>
           <UButton variant="soft" @click="vModalDisplay = false;">
             Κλείσιμο
           </UButton>

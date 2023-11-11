@@ -14,7 +14,7 @@ const pages = [
   {
     name: 'Διαχειριστές',
     icon: 'i-mdi-card-account-details-star-outline',
-    to: '/admins'
+    to: '/imgedit'
   }
 ]
 </script>

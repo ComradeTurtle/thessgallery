@@ -3,18 +3,20 @@ const categories = useState("categories");
 const files = useState("files");
 const featured = useState("featured");
 const res = [];
+let i = 0;
 featured.value.forEach((f) => {
   const cat = categories.value.find((c) => c.name === f.category);
   const obj = {
     ...f,
     description: cat.description,
     count: cat.count,
-    name: cat.name
+    name: cat.name,
+    inx: i
   }
+  i++;
   res.push(obj);
 })
 
-console.log(res);
 </script>
 
 <template>
@@ -22,7 +24,7 @@ console.log(res);
     <h1 class="text-2xl text-center">Επιλέξτε έναν τύπο οχήματος για να προβάλλετε τις εικόνες του</h1>
     <Grid columns="1" rows="3" mdColumns="3" class="gap-2 p-8">
       <div v-for="i in res">
-        <nuxt-link :to="`/vehicle?category=${i.name}`">
+        <nuxt-link :to="`/vehicle?category=${i.name}-${i.inx}`">
           <div class="hvr-reveal rounded">
             <NuxtImg loading="lazy" :src="i.url" />
             <div class="overlay text-center">
