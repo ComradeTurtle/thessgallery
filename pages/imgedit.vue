@@ -17,7 +17,7 @@
 <template>
   <Flex column items="center" justify="center" class="gap-2 py-4">
     <NuxtImg placeholder="loading.jpg" class="max-w-[50vw]" :key="files[position].url" :src="files[position].url" />
-    <p>Εικόνα {{ position + 1 }} από {{ files.length }} ({{ files[position].filename }})</p>
+    <p>Εικόνα</p> <UInput v-model="position" /> <p>από {{ files.length }} ({{ files[position].filename }})</p>
 <!--    <UCheckbox @click="makeEdit('edited')" v-model="isEdited" label="Εμφάνιση μόνο μη-επεξεργασμένων"></UCheckbox>-->
 
     <Flex row gap="3">
