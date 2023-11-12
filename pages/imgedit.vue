@@ -1,12 +1,12 @@
 <script setup>
   const files = useState("files");
-  const lines = useState("lines", () => []);
+  const lines = useState("lines", () => ["1","2K","3K","4","5","6","7","8","9","10","11","11T","12","13","14","15","16","17","19","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","43Y","45","45Y","50","51","52","53","54","55","56","57","58","59","60","61","66","67","68","69","70","71","72","76","77","79","80","81","82","83","84","85","86","87","88","89","90","91","92","100","Χ1","Ν1"]);
   const position = useState("imgEditPos", () => 0);
-  lines.value = await fetch('https://oasth-data.comradeturtle.dev/v1/lines?ignore=true').then((res) => res.json());
+  // lines.value = await fetch('https://oasth-data.comradeturtle.dev/v1/lines?ignore=true').then((res) => res.json());
 
-  lines.value.forEach((lv) => {
-    lv.composite = `${lv.name} ${lv.description}`;
-  })
+  // lines.value.forEach((lv) => {
+  //   lv.composite = `${lv.name} ${lv.description}`;
+  // })
   const isEdited = useState("imgEditIsEdited", () => false);
   const obj = {
     vehicle: files.value[0].vehicle,
@@ -34,7 +34,7 @@
         <UInput v-model="vmodel.vehicle" placeholder="Ο πάροχος συμπληρώνεται αυτόματα" />
       </UFormGroup>
       <UFormGroup label="Γραμμή">
-        <USelectMenu multiple searchable creatable class="w-64" v-model="vmodel.line" :options="lines" placeholder="Επιλογή γραμμής" value-attribute="name" option-attribute="composite" />
+        <USelectMenu multiple searchable creatable class="w-64" v-model="vmodel.line" :options="lines" placeholder="Επιλογή γραμμής" />
       </UFormGroup>
       <UFormGroup label="Τοποθεσία">
         <UInput v-model="vmodel.location" />
