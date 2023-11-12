@@ -19,6 +19,8 @@ export const makeEdit = async (action) => {
 
     switch (action) {
         case ('act'):
+
+            if (Object.hasOwn(vmodel.value.line, 'composite')) vmodel.value.line = vmodel.value.line.composite;
             await fetch(`https://thg-api.comradeturtle.dev/v1/files/makeEdit`, {
                 method: 'POST',
                 headers: {
