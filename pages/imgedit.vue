@@ -10,7 +10,7 @@
   const isEdited = useState("imgEditIsEdited", () => false);
   const obj = {
     vehicle: files.value[0].vehicle,
-    line: files.value[0].line,
+    line: files.value[0].line ? files.value[0].line.split(',') : [],
     location: files.value[0].location,
     date: files.value[0].date,
     notes: files.value[0].notes,
@@ -33,7 +33,7 @@
         <UInput v-model="vmodel.vehicle" placeholder="Ο πάροχος συμπληρώνεται αυτόματα" />
       </UFormGroup>
       <UFormGroup label="Γραμμή">
-        <USelectMenu searchable creatable class="w-64" v-model="vmodel.line" :options="lines" placeholder="Επιλογή γραμμής" value-attribute="name" option-attribute="composite" />
+        <USelectMenu multiple searchable creatable class="w-64" v-model="vmodel.line" :options="lines" placeholder="Επιλογή γραμμής" value-attribute="name" option-attribute="composite" />
       </UFormGroup>
       <UFormGroup label="Τοποθεσία">
         <UInput v-model="vmodel.location" />
