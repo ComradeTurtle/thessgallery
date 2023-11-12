@@ -49,8 +49,9 @@ export const makeEdit = async (action) => {
             vmodel.value = {
                 vehicle: files.value[pos.value].vehicle,
                 location: files.value[pos.value].location,
+                line: files.value[pos.value].line ? files.value[pos.value].line.split(', ') : [],
                 date: files.value[pos.value].date,
-                notes: files.value[pos.value].notes,
+                notes: files.value[pos.value].description,
                 isPublic: files.value[pos.value].isPublic === 1,
                 isFeatured: files.value[pos.value].isFeatured === 1
             }
@@ -60,8 +61,9 @@ export const makeEdit = async (action) => {
             vmodel.value = {
                 vehicle: files.value[pos.value].vehicle,
                 location: files.value[pos.value].location,
+                line: files.value[pos.value].line ? files.value[pos.value].line.split(', ') : [],
                 date: files.value[pos.value].date,
-                notes: files.value[pos.value].notes,
+                notes: files.value[pos.value].description,
                 isPublic: files.value[pos.value].isPublic === 1,
                 isFeatured: files.value[pos.value].isFeatured === 1
             }

@@ -13,11 +13,12 @@
     line: files.value[0].line ? files.value[0].line.split(',') : [],
     location: files.value[0].location,
     date: files.value[0].date,
-    notes: files.value[0].notes,
+    notes: files.value[0].description,
     isPublic: files.value[0].isPublic === 1,
     isFeatured: files.value[0].isFeatured === 1
   }
   const vmodel = useState("imgEditCurr", () => obj);
+
 </script>
 
 <template>
