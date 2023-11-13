@@ -22,11 +22,11 @@ featured.value.forEach((f) => {
 <template>
   <Flex column items="center">
     <h1 class="text-2xl text-center">Επιλέξτε έναν τύπο οχήματος για να προβάλλετε τις εικόνες του</h1>
-    <Grid columns="1" rows="3" mdColumns="3" class="gap-2 p-8">
+    <Grid columns="1" rows="3" mdColumns="3" class="gap-2 p-16">
       <div v-for="i in res">
         <nuxt-link :to="`/vehicle?category=${i.name}-${i.inx}`">
           <div class="hvr-reveal rounded">
-            <NuxtImg loading="lazy" :src="i.url" />
+            <NuxtImg loading="lazy" :src="`https://eu2.contabostorage.com/987a186318de400dba43c3a946456795:${i.name}/${i.filename.split('.')[0]}-opti80.webp`" />
             <div class="overlay text-center">
               <h1 class="text-xl">{{ i.description }}</h1>
               <h1 class="text-base">{{ i.count }} φωτογραφίες</h1>
