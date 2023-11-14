@@ -50,14 +50,26 @@ console.log(vModalDisplay.value);
 </script>
 
 <template>
-  <Grid columns="1" rows="4" mdColumns="4" class="gap-2 m-16">
-    <div v-for="(f, index) in ourFiles" :key="index">
-      <div class="hvr-reveal rounded" @click="openModal(index)">
-        <NuxtImg loading="lazy" :src="`https://eu2.contabostorage.com/987a186318de400dba43c3a946456795:${category}/${f.filename.split('.')[0]}-opti80.webp`" />
+  <Flex justify="center" items="center" column>
+    <UButton variant="outline">
+      <nuxt-link to="/">
+        <Flex gap="1" justify="center">
+          <Icon name="i-mdi-arrow-left" size="2em" class="text-primary" />
+          <h1 class="text-2xl">Επιστροφή</h1>
+        </Flex>
+      </nuxt-link>
+    </UButton>
+    <h1 class="text-3xl pb-3">Τύπος οχήματος: {{ categoryObj.description }}</h1>
+  </Flex>
+
+  <div class="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-8 px-6 py-8">
+    <div v-for="(f, index) in ourFiles" :key="index" class="mb-8">
+      <div class="hvr-reveal rounded w-full" @click="openModal(index)">
+        <NuxtImg placeholder="loading.jpg" loading="lazy" class="object-cover w-full" :src="`https://eu2.contabostorage.com/987a186318de400dba43c3a946456795:${category}/${f.filename.split('.')[0]}-opti80.webp`" />
       </div>
-      <UModal prevent-close v-model="vModalDisplay[index]" :ui="{ overlay: {background: 'bg-dark opacity-40'}}">
+      <UModal prevent-close v-model="vModalDisplay[index]" :ui="{ overlay: {background: 'bg-dark opacity-80 backdrop-blur-sm transition-all'}, width: 'sm:max-w-2xl'}">
         <Flex column justify="center" items="center" class="p-8">
-          <NuxtImg style="max-height: 80vh;" :src="`https://eu2.contabostorage.com/987a186318de400dba43c3a946456795:${category}/${f.filename.split('.')[0]}-opti80.webp`" />
+          <NuxtImg :src="`https://eu2.contabostorage.com/987a186318de400dba43c3a946456795:${category}/${f.filename.split('.')[0]}-opti80.webp`" />
           <h1 v-html="createDesc(f)" class="text-xl text-center mt-4 mb-2 bg-gray-200 bg-opacity-5 border-1 border border-gray-500 rounded p-6"></h1>
           <UButton variant="soft" @click="closeModal(index)">
             Κλείσιμο
@@ -65,7 +77,7 @@ console.log(vModalDisplay.value);
         </Flex>
       </UModal>
     </div>
-  </Grid>
+  </div>
 </template>
 
 <style scoped>
