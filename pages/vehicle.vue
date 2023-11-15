@@ -1,10 +1,9 @@
 <script setup>
-import {vModelDynamic} from "vue";
-
 const route = useRoute();
 const files = useState("files");
 const categories = useState("categories");
 const category = route.query.category.split('-')[0];
+const isDirect = route.query.direct === "1";
 const categoryObj = categories.value.find((f) => f.name === category);
 const ourFiles = files.value.filter((f) => f.category === category && f.isPublic);
 
@@ -50,14 +49,19 @@ console.log(vModalDisplay.value);
 </script>
 
 <template>
-  <Flex justify="center" items="center" column>
+  <Flex justify="center" items="center" column gap="2">
     <UButton variant="outline">
-      <nuxt-link to="/">
+      <nuxt-link to="/" v-if="!isDirect">
         <Flex gap="1" justify="center">
           <Icon name="i-mdi-arrow-left" size="2em" class="text-primary" />
           <h1 class="text-2xl">Επιστροφή</h1>
         </Flex>
       </nuxt-link>
+
+      <Flex v-else gap="2" justify="center" items="center">
+        <Icon name="i-mdi-launch" size="2em" class="text-primary" />
+        <h1 class="text-2xl">Άνοιγμα σε νέα καρτέλα</h1>
+      </Flex>
     </UButton>
     <h1 class="text-3xl pb-3">Τύπος οχήματος: {{ categoryObj.description }}</h1>
   </Flex>

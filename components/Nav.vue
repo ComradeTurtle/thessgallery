@@ -30,7 +30,6 @@ const adminPages = [
 
 const admins_ui = {
   width: "w-64",
-  padding: "p-2",
   item: {
     size: "text-base",
     icon: {
@@ -38,11 +37,13 @@ const admins_ui = {
     },
   },
 };
+
+const user = useState("user");
 </script>
 <template>
   <Flex is="nav" row items="center" justify="between" gap="4" class="p-4">
-    <NuxtLink to="/">
-      <h1 class="text-xl font-medium text-black dark:text-white">Thessgallery</h1>
+    <NuxtLink to="/" class=w-1/3>
+      <NuxtImg src="logo.png" class="w-1/3" />
     </NuxtLink>
     <Flex hidden lg row items="center" class="gap-4">
       <Flex
@@ -51,31 +52,36 @@ const admins_ui = {
           :to="page.to"
           row
           items="center"
-          class="hover:text-primary-500 gap-1 transition-colors"
+          class="hover:text-primary-400 gap-1 transition-colors"
       >
         <Icon :name="page.icon" size="1.25em" class="text-primary-400" />
-        <span>{{ page.name }}</span>
+        <span :class="{ 'text-primary-200': route.path === page.to }" >{{ page.name }}</span>
       </Flex>
 
 
-      <UDropdown :items="adminPages" :popper="{ placement: 'bottom' }" :ui="admins_ui">
-        <Flex row items="center" class="hover:text-primary-500 gap-1 transition-colors">
+      <UDropdown :items="adminPages" :popper="{ placement: 'bottom' }" :ui="admins_ui" v-if="user?.preferences?.permissions >= 2">
+        <Flex row items="center" class="hover:text-primary-300 gap-1 transition-colors">
           <Icon name="i-mdi-card-account-details-star-outline" size="1.25em" class="text-primary-400" />
-          <span :class="{ 'text-primary-300': route.path.includes('admins') }">Διαχειριστές</span>
+          <span :class="{ 'text-primary-200': route.path.includes('admins') }">Διαχειριστές</span>
         </Flex>
       </UDropdown>
 
-
-      <Flex
-          router
-          to="/auth"
-          row
-          items="center"
-          class="hover:text-primary-500 gap-1 transition-colors"
-      >
-        <Icon name="mdi:account-outline" size="1.25em" class="text-primary-400" />
+      <Flex v-if="!user" router to="/auth" row items="center" class="hover:text-primary-500 gap-1 transition-colors">
+        <Icon name="mdi:account-outline" size="1.25em" class="text-primary-400"/>
         <span>Σύνδεση</span>
       </Flex>
-  </Flex>
+
+      <Flex
+          v-else
+          is="button"
+          row
+          items="center"
+          @click="clearSession(() => navigateTo('/'))"
+          class="gap-1 transition-colors hover:text-red-400"
+      >
+        <Icon name="mdi:logout" size="1.25em" class="text-red-500" />
+        <span>Αποσύνδεση</span>
+      </Flex>
+    </Flex>
   </Flex>
  </template>

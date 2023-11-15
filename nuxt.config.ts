@@ -7,7 +7,6 @@ export default defineNuxtConfig({
     global: true,
     icons: ['mdi', 'heroicons']
   },
-  plugins: [ { src: '~/plugins/base64.js' } ],
   runtimeConfig: {
     turnstile: {
       secretKey: '0x4AAAAAAANGxvHox_SvEr27itNjWEDR-X0'

@@ -6,8 +6,17 @@ useState("user", () => null);
 useState("categories").value = data;
 useState("files").value = data2;
 useState("featured").value = data2.filter((f) => f.isFeatured === 1);
+
+onMounted(() => getUser());
+
 </script>
 <template>
   <Nav />
   <NuxtPage />
 </template>
+
+<style>
+  body {
+    background: #171717;
+  }
+</style>

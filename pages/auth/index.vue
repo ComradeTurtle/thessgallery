@@ -26,6 +26,7 @@ const authItems = [
 
             <Flex column items="center" class="border-primary-500 rounded border-2 p-4">
               <AuthLogin v-if="item.key === 'login'"/>
+              <AuthRegister v-else />
             </Flex>
           </Flex>
         </template>

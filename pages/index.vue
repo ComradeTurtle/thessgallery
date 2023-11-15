@@ -6,6 +6,7 @@ const res = [];
 let i = 0;
 featured.value.forEach((f) => {
   const cat = categories.value.find((c) => c.name === f.category);
+
   const obj = {
     ...f,
     description: cat.description,
@@ -16,7 +17,6 @@ featured.value.forEach((f) => {
   i++;
   res.push(obj);
 })
-
 </script>
 
 <template>
@@ -73,7 +73,7 @@ featured.value.forEach((f) => {
   right: 0;
   top: 0;
   bottom: 0;
-  border-color: #0f1ad2;
+  border-color: #2e36ff;
   border-style: solid;
   border-width: 0;
   -webkit-transition-property: border-width;
