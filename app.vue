@@ -8,7 +8,6 @@ useState("files").value = data2;
 useState("featured").value = data2.filter((f) => f.isFeatured === 1);
 
 onMounted(() => getUser());
-
 </script>
 <template>
   <Nav />
@@ -17,6 +16,8 @@ onMounted(() => getUser());
 
 <style>
   body {
+    @apply font-bahnscrift;
     background: #171717;
+    font-family: bahnschrift,sans-serif;
   }
 </style>

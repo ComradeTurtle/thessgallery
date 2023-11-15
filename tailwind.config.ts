@@ -29,7 +29,7 @@ export default {
             },
 
             fontFamily: {
-                ubuntu: ["Ubuntu", "sans-serif"]
+                bahnscrift: ["Bahnscrift", "sans-serif"]
             }
         }
     },

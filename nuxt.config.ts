@@ -3,6 +3,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: false,
   modules: ['@nuxt/ui', 'nuxt-icon', 'vue3-carousel-nuxt', '@nuxt/image', '@nuxtjs/device', '@nuxtjs/turnstile'],
+  css: ["assets/css/fonts.css"],
   ui: {
     global: true,
     icons: ['mdi', 'heroicons']
