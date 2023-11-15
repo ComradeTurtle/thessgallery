@@ -1278,7 +1278,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuxt/kit@npm:^3.6.3":
+"@nuxt/kit@npm:^3.6.3, @nuxt/kit@npm:^3.7.0, @nuxt/kit@npm:^3.7.3":
   version: 3.8.1
   resolution: "@nuxt/kit@npm:3.8.1"
   dependencies:
@@ -1477,6 +1477,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nuxtjs/device@npm:^3.1.1":
+  version: 3.1.1
+  resolution: "@nuxtjs/device@npm:3.1.1"
+  dependencies:
+    "@nuxt/kit": "npm:^3.7.3"
+    defu: "npm:^6.1.2"
+  checksum: bf02b1b8f5055f14e9a2b53ea06687cbd2a3d161980394205642f9a8923ed46e7675258fcbd9ebd1b6f88e0eba5485ab77daa5db0a4cd9223fbb35060c9c1260
+  languageName: node
+  linkType: hard
+
 "@nuxtjs/tailwindcss@npm:^6.8.1":
   version: 6.9.4
   resolution: "@nuxtjs/tailwindcss@npm:6.9.4"
@@ -1503,6 +1513,17 @@ __metadata:
     ufo: "npm:^1.3.1"
     uncrypto: "npm:^0.1.3"
   checksum: 9d2bb156bc2b96408017aad859b51db8c7faf8800d5ac0f63b3868334ab91004c20b99851b25f46fb1350e74ea1fe4817cdb532351358cbae1c714748d70c03a
+  languageName: node
+  linkType: hard
+
+"@nuxtjs/turnstile@npm:^0.6.3":
+  version: 0.6.3
+  resolution: "@nuxtjs/turnstile@npm:0.6.3"
+  dependencies:
+    "@nuxt/kit": "npm:^3.7.0"
+    defu: "npm:^6.1.2"
+    pathe: "npm:^1.1.1"
+  checksum: 49208dffe580748f05c02fc7f390dddda930cdaa9936f0ba790554a5f10042a3b1fcbda9cc2076301b8b228853f4e52423aa3a2a2db67abed88af62f8edcb919
   languageName: node
   linkType: hard
 
@@ -6743,6 +6764,8 @@ __metadata:
     "@nuxt/devtools": "npm:latest"
     "@nuxt/image": "npm:^1.0.0"
     "@nuxt/ui": "npm:^2.10.0"
+    "@nuxtjs/device": "npm:^3.1.1"
+    "@nuxtjs/turnstile": "npm:^0.6.3"
     aws-sdk: "npm:^2.1488.0"
     express: "npm:^4.18.2"
     multer: "npm:^1.4.5-lts.1"

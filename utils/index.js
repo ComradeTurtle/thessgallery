@@ -91,3 +91,134 @@ export const decodeb64 = (val) => {
         return Buffer.from(val, 'base64').toString('ascii')
     }
 }
+
+export const login = async () => {
+    const username = useState("user_username");
+    const password = useState("user_password");
+    const loginButtonText = useState("login_button_text");
+    const loginButtonIcon = useState("login_button_icon");
+
+    if (username.value === "" || !username.value || password.value === "" || !password.value) {
+        loginButtonIcon.value = 'mdi:exclamation-thick';
+        loginButtonText.value = 'Συμπληρώστε όλα τα στοιχεία!';
+
+        setTimeout(() => {
+            loginButtonIcon.value = 'mdi:key';
+            loginButtonText.value = 'Συνέχεια';
+        }, 2000);
+
+        return;
+    }
+
+    loginButtonIcon.value = 'svg-spinners:ring-resize';
+    loginButtonText.value = 'Δημιουργία συνεδρίας..';
+
+    fetch(`http://localhost:12700/v1/account/login`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email: username.value, password: password.value })
+    }).then(async (res) => {
+        if (!res.ok) {
+            loginButtonIcon.value = 'mdi:exclamation-thick';
+
+            if (res.status === 401) {
+                loginButtonText.value = "Λανθασμένα στοιχεία σύνδεσης!";
+                // teleact({action: "USER_LOGIN_FAIL", data: {acc: username.value, error: 'invalid credentials'}})
+            }
+            else if (res.status === 429 || res.status === 420) {
+                loginButtonText.value = "Πολλές αποτυχημένες προσπάθειες. Προσπαθήστε αργότερα.";
+                // teleact({action: "USER_LOGIN_FAIL", data: {acc: username.value, error: 'ratelimit'}})
+            }
+            else {
+                loginButtonText.value = "Αποτυχία σύνδεσης. Παρακαλώ επικοινωνήστε με διαχειριστή.";
+                // teleact({action: "USER_LOGIN_FAIL", data: {acc: username.value, error: res.status}})
+            }
+
+            setTimeout(() => {
+                loginButtonIcon.value = "mdi:key";
+                loginButtonText.value = "Συνέχεια";
+            }, 3000);
+
+            return;
+        }
+        res.json().then((data) => {
+            loginButtonIcon.value = 'mdi:check-bold';
+            loginButtonText.value = 'Επιτυχής ταυτοποίηση.';
+
+            username.value = null;
+            password.value = null;
+
+            useState("user").value = data.data;
+            localStorage.setItem('accPreferences', JSON.stringify(data.data));
+
+            setTimeout(() => navigateTo("/"), 500);
+        })
+    })
+}
+
+export const turnstile = (response, type = 'login') => {
+    fetch(`http://localhost:12700/v1/turnstile/verify`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            captchaResponse: response
+        })
+    }).then(async (res) => {
+        if (res.ok) {
+            useState("turnstile_verify").value = true;
+
+            if (type === 'login') await login();
+            if (type === 'register') await register();
+        }
+    })
+}
+
+export const getUser = () => {
+    return new Promise((resolve) => {
+        const session = sessionStorage.getItem("sessionObj");
+        if (session && session !== "undefined") useState("user").value = JSON.parse(sessionStorage.getItem("sessionObj"));
+
+        fetch(`http://localhost:12700/v1/account/get`, {
+            credentials: "include",
+        })
+            .then(async (res) => {
+                if (!res.ok) return;
+
+                const result = await res.json();
+                if (result.status === "error") return;
+
+                sessionStorage.setItem("sessionObj", JSON.stringify({ data: result.data }));
+                useState("user").value = result.data;
+
+                resolve();
+            })
+    });
+};
+
+export const clearSession = (navigate) => {
+    fetch(`http://localhost:12700/v1/account/logout`, {
+        method: "POST",
+        credentials: "include",
+    })
+        .then(async (res) => {
+            // teleact({action: "USER_LOGOUT_SUCCESS", data: { acc: useState("user").value.email }});
+
+            if (!res.ok) {
+                // teleact({action: "USER_LOGOUT_FAIL", data: { acc: useState("user").value.email, error: res.status }});
+                return;
+            }
+
+            const data = await res.json();
+            if (data.status !== "success") return;
+
+            sessionStorage.removeItem("sessionObj");
+            useState("user").value = null;
+
+            navigate();
+        })
+};

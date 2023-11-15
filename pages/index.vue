@@ -6,6 +6,7 @@ const res = [];
 let i = 0;
 featured.value.forEach((f) => {
   const cat = categories.value.find((c) => c.name === f.category);
+
   const obj = {
     ...f,
     description: cat.description,
@@ -16,7 +17,6 @@ featured.value.forEach((f) => {
   i++;
   res.push(obj);
 })
-
 </script>
 
 <template>
@@ -25,8 +25,8 @@ featured.value.forEach((f) => {
     <Grid columns="1" rows="3" mdColumns="3" class="gap-2 p-16">
       <div v-for="i in res">
         <nuxt-link :to="`/vehicle?category=${i.name}-${i.inx}`">
-          <div class="hvr-reveal rounded">
-            <NuxtImg loading="lazy" :src="`https://eu2.contabostorage.com/987a186318de400dba43c3a946456795:${i.name}/${i.filename.split('.')[0]}-opti80.webp`" />
+          <div class="hvr-reveal rounded w-full">
+            <NuxtImg class="max-h-80 h-full w-full object-cover" loading="lazy" placeholder="loading.jpg" :src="`https://eu2.contabostorage.com/987a186318de400dba43c3a946456795:${i.name}/${i.filename.split('.')[0]}-opti80.webp`" />
             <div class="overlay text-center">
               <h1 class="text-xl">{{ i.description }}</h1>
               <h1 class="text-base">{{ i.count }} φωτογραφίες</h1>
@@ -49,6 +49,7 @@ featured.value.forEach((f) => {
 </style>
 <style scoped>
 .overlay {
+  @apply relative -mt-[60px] h-[60px];
   position: relative;
   margin-top: -60px;
   height: 60px;
@@ -72,7 +73,7 @@ featured.value.forEach((f) => {
   right: 0;
   top: 0;
   bottom: 0;
-  border-color: #0f1ad2;
+  border-color: #2e36ff;
   border-style: solid;
   border-width: 0;
   -webkit-transition-property: border-width;

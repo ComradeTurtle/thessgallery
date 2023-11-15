@@ -2,10 +2,19 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: false,
-  modules: ['@nuxt/ui', 'nuxt-icon', 'vue3-carousel-nuxt', "@nuxt/image"],
+  modules: ['@nuxt/ui', 'nuxt-icon', 'vue3-carousel-nuxt', '@nuxt/image', '@nuxtjs/device', '@nuxtjs/turnstile'],
+  css: ["assets/css/fonts.css"],
   ui: {
     global: true,
     icons: ['mdi', 'heroicons']
   },
-  plugins: [ { src: '~/plugins/base64.js' } ]
+  runtimeConfig: {
+    turnstile: {
+      secretKey: '0x4AAAAAAANGxvHox_SvEr27itNjWEDR-X0'
+    }
+  },
+
+  turnstile: {
+    siteKey: '0x4AAAAAAANGxnLjALs96sVq'
+  }
 })
