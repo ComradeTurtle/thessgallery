@@ -1,5 +1,7 @@
 <script setup>
 const route = useRoute();
+const { isMobileOrTablet } = useDevice();
+
 const pages = [
   {
     name: 'Αρχική',
@@ -41,10 +43,15 @@ const admins_ui = {
 const user = useState("user");
 </script>
 <template>
-  <Flex is="nav" row items="center" justify="between" gap="4" class="p-4">
-    <NuxtLink to="/" class=w-1/3>
+  <Flex is="nav" row items="center" justify="between" gap="4" class="p-2">
+    <NuxtLink v-if="!isMobileOrTablet" to="/" class=w-1/2>
       <NuxtImg src="logo.png" class="w-1/3" />
     </NuxtLink>
+
+    <NuxtLine v-else to="/">
+      <h1 class="text-xl font-medium text-black dark:text-white">Thesstrans Gallery</h1>
+    </NuxtLine>
+
     <Flex hidden lg row items="center" class="gap-4">
       <Flex
           v-for="page in pages"

@@ -1,5 +1,6 @@
 <script setup>
   const user = useState("user");
+
   if (!user.value || user.value.preferences.permissions < 2) navigateTo('/auth');
 
   const files = useState("files");
@@ -22,7 +23,7 @@
 
 <template>
   <Flex column items="center" justify="center" class="gap-2 py-4">
-    <NuxtImg placeholder="loading.jpg" class="max-w-[50vw]" :key="files[position].url" :src="files[position].url" />
+    <NuxtImg placeholder="../loading.jpg" class="max-h-[55vh]" :key="files[position].url" :src="files[position].url" />
     <div class="inline-flex gap-2 items-baseline">
       <p>Εικόνα</p> <UInput size="xs" class="w-12" v-model="position" /> <p>από {{ files.length }} ({{ files[position].filename }})</p>
     </div>
