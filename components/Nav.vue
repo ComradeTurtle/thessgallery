@@ -1,7 +1,7 @@
 <script setup>
 const route = useRoute();
 const { isMobileOrTablet } = useDevice();
-
+const menu = ref(false);
 const pages = [
   {
     name: 'Αρχική',
@@ -48,11 +48,11 @@ const user = useState("user");
       <NuxtImg src="logo.png" class="w-1/3" />
     </NuxtLink>
 
-    <NuxtLine v-else to="/">
+    <NuxtLink v-else to="/">
       <h1 class="text-xl font-medium text-black dark:text-white">Thesstrans Gallery</h1>
-    </NuxtLine>
+    </NuxtLink>
 
-    <Flex hidden lg row items="center" class="gap-4">
+    <Flex row items="center" class="gap-4 lg:flex hidden">
       <Flex
           v-for="page in pages"
           router
@@ -89,6 +89,10 @@ const user = useState("user");
         <Icon name="mdi:logout" size="1.25em" class="text-red-500" />
         <span>Αποσύνδεση</span>
       </Flex>
+    </Flex>
+    <Flex class="lg:hidden">
+      <Icon name="mdi:menu" size="2em" class="text-gray-400" @click="menu = !menu" />
+      <NavMenu v-model="menu" />
     </Flex>
   </Flex>
  </template>
