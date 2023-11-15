@@ -113,7 +113,7 @@ export const login = async () => {
     loginButtonIcon.value = 'svg-spinners:ring-resize';
     loginButtonText.value = 'Δημιουργία συνεδρίας..';
 
-    fetch(`http://localhost:12700/v1/account/login`, {
+    fetch(`https://thg-api.comradeturtle.dev/v1/account/login`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -160,7 +160,7 @@ export const login = async () => {
 }
 
 export const turnstile = (response, type = 'login') => {
-    fetch(`http://localhost:12700/v1/turnstile/verify`, {
+    fetch(`https://thg-api.comradeturtle.dev/v1/turnstile/verify`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -183,7 +183,7 @@ export const getUser = () => {
         const session = sessionStorage.getItem("sessionObj");
         if (session && session !== "undefined") useState("user").value = JSON.parse(sessionStorage.getItem("sessionObj"));
 
-        fetch(`http://localhost:12700/v1/account/get`, {
+        fetch(`https://thg-api.comradeturtle.dev/v1/account/get`, {
             credentials: "include",
         })
             .then(async (res) => {
@@ -201,7 +201,7 @@ export const getUser = () => {
 };
 
 export const clearSession = (navigate) => {
-    fetch(`http://localhost:12700/v1/account/logout`, {
+    fetch(`https://thg-api.comradeturtle.dev/v1/account/logout`, {
         method: "POST",
         credentials: "include",
     })
