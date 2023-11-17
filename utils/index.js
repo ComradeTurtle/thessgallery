@@ -194,52 +194,6 @@ export const turnstile = (response, type = 'login') => {
         }
     })
 }
-
-export const getUser = () => {
-    return new Promise((resolve) => {
-        const session = sessionStorage.getItem("sessionObj");
-        if (session && session !== "undefined") useState("user").value = JSON.parse(sessionStorage.getItem("sessionObj"));
-
-        fetch(`https://thg-api.comradeturtle.dev/v1/account/get`, {
-            credentials: "include",
-        })
-            .then(async (res) => {
-                if (!res.ok) return;
-
-                const result = await res.json();
-                if (result.status === "error") return;
-
-                sessionStorage.setItem("sessionObj", JSON.stringify({ data: result.data }));
-                useState("user").value = result.data;
-
-                resolve();
-            })
-    });
-};
-
-export const clearSession = (navigate) => {
-    fetch(`https://thg-api.comradeturtle.dev/v1/account/logout`, {
-        method: "POST",
-        credentials: "include",
-    })
-        .then(async (res) => {
-            // teleact({action: "USER_LOGOUT_SUCCESS", data: { acc: useState("user").value.email }});
-
-            if (!res.ok) {
-                // teleact({action: "USER_LOGOUT_FAIL", data: { acc: useState("user").value.email, error: res.status }});
-                return;
-            }
-
-            const data = await res.json();
-            if (data.status !== "success") return;
-
-            sessionStorage.removeItem("sessionObj");
-            useState("user").value = null;
-
-            navigate();
-        })
-};
-
 export const getUser = () => {
     return new Promise((resolve) => {
         const session = sessionStorage.getItem("sessionObj");
