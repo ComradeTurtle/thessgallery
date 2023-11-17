@@ -25,7 +25,8 @@ const adminPages = [
     {
       label: 'Μεταφόρτωση',
       icon: 'i-mdi-cloud-upload-outline',
-      to: '/admins/upload'
+      to: '/admins/upload',
+      disabled: true
     },
   ]
 ]

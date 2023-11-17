@@ -12,12 +12,26 @@ export const uploadFile = async (state) => {
     // console.log(pd);
 }
 
-export const makeEdit = async (action) => {
+export const makeEdit = async (action, ) => {
     const vmodel = useState("imgEditCurr");
     const pos = useState("imgEditPos");
     const files = useState("files");
 
     switch (action) {
+        case ('set'):
+            navigateTo('/admins/edit');
+            pos.value = files.value.findIndex((vi) => vi.incid === v);
+            vmodel.value = {
+                vehicle: files.value[pos.value].vehicle,
+                location: files.value[pos.value].location,
+                line: files.value[pos.value].line ? files.value[pos.value].line.split(', ') : [],
+                date: files.value[pos.value].date,
+                notes: files.value[pos.value].description,
+                category: files.value[pos.value].category,
+                isPublic: files.value[pos.value].isPublic === 1,
+                isFeatured: files.value[pos.value].isFeatured === 1
+            }
+            break;
         case ('act'):
             if (Array.isArray(vmodel.value.line)) {
                 vmodel.value.line.forEach((vvl) => {
@@ -36,7 +50,8 @@ export const makeEdit = async (action) => {
                 },
                 body: JSON.stringify({
                     filename: files.value[pos.value].filename,
-                    category: files.value[pos.value].category,
+                    origCategory: files.value[pos.value].category,
+                    incid: files.value[pos.value].incid,
                     ...vmodel.value
                 })
             });
@@ -52,6 +67,7 @@ export const makeEdit = async (action) => {
                 line: files.value[pos.value].line ? files.value[pos.value].line.split(', ') : [],
                 date: files.value[pos.value].date,
                 notes: files.value[pos.value].description,
+                category: files.value[pos.value].category,
                 isPublic: files.value[pos.value].isPublic === 1,
                 isFeatured: files.value[pos.value].isFeatured === 1
             }
@@ -64,6 +80,7 @@ export const makeEdit = async (action) => {
                 line: files.value[pos.value].line ? files.value[pos.value].line.split(', ') : [],
                 date: files.value[pos.value].date,
                 notes: files.value[pos.value].description,
+                category: files.value[pos.value].category,
                 isPublic: files.value[pos.value].isPublic === 1,
                 isFeatured: files.value[pos.value].isFeatured === 1
             }
@@ -222,3 +239,92 @@ export const clearSession = (navigate) => {
             navigate();
         })
 };
+
+export const getUser = () => {
+    return new Promise((resolve) => {
+        const session = sessionStorage.getItem("sessionObj");
+        if (session && session !== "undefined") useState("user").value = JSON.parse(sessionStorage.getItem("sessionObj"));
+
+        fetch(`https://thg-api.comradeturtle.dev/v1/account/get`, {
+            credentials: "include",
+        })
+            .then(async (res) => {
+                if (!res.ok) return;
+
+                const result = await res.json();
+                if (result.status === "error") return;
+
+                sessionStorage.setItem("sessionObj", JSON.stringify({ data: result.data }));
+                useState("user").value = result.data;
+
+                resolve();
+            })
+    });
+};
+
+export const clearSession = (navigate) => {
+    fetch(`https://thg-api.comradeturtle.dev/v1/account/logout`, {
+        method: "POST",
+        credentials: "include",
+    })
+        .then(async (res) => {
+            // teleact({action: "USER_LOGOUT_SUCCESS", data: { acc: useState("user").value.email }});
+
+            if (!res.ok) {
+                // teleact({action: "USER_LOGOUT_FAIL", data: { acc: useState("user").value.email, error: res.status }});
+                return;
+            }
+
+            const data = await res.json();
+            if (data.status !== "success") return;
+
+            sessionStorage.removeItem("sessionObj");
+            useState("user").value = null;
+
+            navigate();
+        })
+};
+
+export const handleAdminShow = (f, category) => {
+    const files = useState("files");
+
+    const file = files.value.filter((fi) => fi.filename === f.filename && fi.category === category);
+}
+
+export const makeCategoryEdit = async (action, v) => {
+    const categories = useState("categories");
+    const vmodel = useState("categoryEditCurr");
+    switch (action) {
+        case ('select'):
+            const category = categories.value.find((c) => c.name === v);
+            vmodel.value = {
+                name: category.name,
+                description: category.description,
+                isVisible: category.isVisible === 1
+            };
+            break;
+        case ('add'):
+            await fetch('https://thg-api.comradeturtle.dev/v1/category/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    ...vmodel.value
+                })
+            });
+            break;
+        case ('edit'):
+            await fetch('https://thg-api.comradeturtle.dev/v1/category/edit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    ...vmodel.value
+                })
+            })
+            break;
+    }
+    categories.value = await fetch('https://thg-api.comradeturtle.dev/v1/category/list').then((res) => res.json());
+}

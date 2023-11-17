@@ -1,5 +1,6 @@
 <script setup>
 const route = useRoute();
+const user = useState("user");
 const files = useState("files");
 const categories = useState("categories");
 const category = route.query.category.split('-')[0];
@@ -74,9 +75,14 @@ console.log(vModalDisplay.value);
         <Flex column justify="center" items="center" class="p-8">
           <NuxtImg :src="`https://eu2.contabostorage.com/987a186318de400dba43c3a946456795:${category}/${f.filename.split('.')[0]}-opti80.webp`" />
           <h1 v-html="createDesc(f)" class="text-xl text-center mt-4 mb-2 bg-gray-200 bg-opacity-5 border-1 border border-gray-500 rounded p-6"></h1>
-          <UButton variant="soft" @click="closeModal(index)">
-            Κλείσιμο
-          </UButton>
+          <Flex row gap="2" justify="between">
+            <UButton variant="soft" @click="closeModal(index)">
+              Κλείσιμο
+            </UButton>
+            <UButton color="purple" v-if="user.preferences?.permissions >= 2" @click="makeEdit('set', f.incid)">
+              Επεξεργασία Διαχειριστή
+            </UButton>
+          </Flex>
         </Flex>
       </UModal>
     </div>
