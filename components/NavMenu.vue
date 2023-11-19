@@ -63,7 +63,7 @@ const logout = () => clearSession(() => navigateTo("/"));
             <span>{{ page.name }}</span>
           </Flex>
 
-          <UDropdown :items="adminPages" :popper="{ placement: 'bottom' }" :ui="admin_ui">
+          <UDropdown v-if="user?.preferences?.permissions >= 2" :items="adminPages" :popper="{ placement: 'bottom' }" :ui="admin_ui">
             <Flex row items="center" class="hover:text-primary-400 gap-1 transition-colors">
               <Icon name="uil:university" size="1.25em" class="text-primary-400" />
               <span :class="{ 'text-primary-200': route.path.includes('admins') }">Διαχειριστές</span>

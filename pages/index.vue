@@ -7,6 +7,7 @@ let i = 0;
 
 categories.value.forEach((c) => {
   const feat = featured.value.find((f) => f.category === c.name);
+  if (!feat) return;
   const count = files.value.filter((v) => {
     const extraCategories = v.extraCategories || [];
 
