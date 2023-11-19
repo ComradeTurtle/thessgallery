@@ -1,11 +1,16 @@
 <script setup>
 const route = useRoute();
+const user = useState("user");
 const files = useState("files");
 const categories = useState("categories");
 const category = route.query.category.split('-')[0];
 const isDirect = route.query.direct === "1";
 const categoryObj = categories.value.find((f) => f.name === category);
-const ourFiles = files.value.filter((f) => f.category === category && f.isPublic);
+const ourFiles = files.value.filter((f) => {
+  const extraCategories = f.extraCategories || [];
+
+  return (f.category === category || extraCategories.includes(category)) && f.isPublic
+});
 
 for (let i = 0; i < ourFiles.length; i++) {
   ourFiles[i].inx = i;
@@ -46,6 +51,18 @@ const closeModal = (index) => {
 }
 console.log(vModalDisplay.value);
 
+const createUrl = (v) => {
+  let str = "";
+
+  const l = v.split('.');
+
+  for (let i = 0; i < l.length - 1; i++) {
+    i === l.length - 2 ? str += `${l[i]}` : str += `${l[i]}.`;
+  }
+
+  return `${str}-opti80.webp`;
+}
+
 </script>
 
 <template>
@@ -68,15 +85,20 @@ console.log(vModalDisplay.value);
   <div class="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-8 px-6 py-8">
     <div v-for="(f, index) in ourFiles" :key="index" class="mb-8">
       <div class="hvr-reveal rounded w-full" @click="openModal(index)">
-        <NuxtImg placeholder="loading.jpg" loading="lazy" class="object-cover w-full" :src="`https://eu2.contabostorage.com/987a186318de400dba43c3a946456795:${category}/${f.filename.split('.')[0]}-opti80.webp`" />
+        <NuxtImg placeholder="loading.jpg" loading="lazy" class="object-cover w-full" :src="`${createUrl(f.url)}`" />
       </div>
       <UModal prevent-close v-model="vModalDisplay[index]" :ui="{ overlay: {background: 'bg-dark opacity-80 backdrop-blur-sm transition-all'}, width: 'sm:max-w-2xl'}">
         <Flex column justify="center" items="center" class="p-8">
-          <NuxtImg :src="`https://eu2.contabostorage.com/987a186318de400dba43c3a946456795:${category}/${f.filename.split('.')[0]}-opti80.webp`" />
+          <NuxtImg :src="`${createUrl(f.url)}`" />
           <h1 v-html="createDesc(f)" class="text-xl text-center mt-4 mb-2 bg-gray-200 bg-opacity-5 border-1 border border-gray-500 rounded p-6"></h1>
-          <UButton variant="soft" @click="closeModal(index)">
-            Κλείσιμο
-          </UButton>
+          <Flex row gap="2" justify="between">
+            <UButton variant="soft" @click="closeModal(index)">
+              Κλείσιμο
+            </UButton>
+            <UButton color="purple" v-if="user.preferences?.permissions >= 2" @click="makeEdit('set', f.incid)">
+              Επεξεργασία Διαχειριστή
+            </UButton>
+          </Flex>
         </Flex>
       </UModal>
     </div>

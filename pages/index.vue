@@ -4,27 +4,33 @@ const files = useState("files");
 const featured = useState("featured");
 const res = [];
 let i = 0;
-featured.value.forEach((f) => {
-  const cat = categories.value.find((c) => c.name === f.category);
 
-  const obj = {
-    ...f,
-    description: cat.description,
-    count: cat.count,
-    name: cat.name,
-    inx: i
-  }
+categories.value.forEach((c) => {
+  const feat = featured.value.find((f) => f.category === c.name);
+  const count = files.value.filter((v) => {
+    const extraCategories = v.extraCategories || [];
+
+    return (v.category === c.name || extraCategories.includes(c.name) && v.isPublic);
+  }).length;
+
   i++;
-  res.push(obj);
+  delete feat.description;
+  res.push({
+    name: c.name,
+    description: c.description,
+    count: count,
+    ...feat
+  })
 })
 </script>
 
 <template>
   <Flex column items="center">
-    <h1 class="text-2xl text-center">Επιλέξτε έναν τύπο οχήματος για να προβάλλετε τις εικόνες του</h1>
+    <h1 class="text-2xl text-center">Καλωσορίσατε στη γκαλερί του <NuxtLink class="font-semibold underline" external to="https://thesstrans.com">Thesstrans!</NuxtLink></h1>
+    <h1 class="text-xl text-center">Επιλέξτε έναν τύπο οχήματος για να προβάλλετε τις εικόνες του</h1>
     <Grid columns="1" rows="3" mdColumns="3" class="gap-2 p-16">
       <div v-for="i in res">
-        <nuxt-link :to="`/vehicle?category=${i.name}-${i.inx}`">
+        <nuxt-link :to="`/vehicle?category=${i.name}`">
           <div class="hvr-reveal rounded w-full">
             <NuxtImg class="max-h-80 h-full w-full object-cover" loading="lazy" placeholder="loading.jpg" :src="`https://eu2.contabostorage.com/987a186318de400dba43c3a946456795:${i.name}/${i.filename.split('.')[0]}-opti80.webp`" />
             <div class="overlay text-center">
