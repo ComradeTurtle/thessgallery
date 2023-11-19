@@ -95,7 +95,7 @@ const createUrl = (v) => {
             <UButton variant="soft" @click="closeModal(index)">
               Κλείσιμο
             </UButton>
-            <UButton color="purple" v-if="user.preferences?.permissions >= 2" @click="makeEdit('set', f.incid)">
+            <UButton color="purple" v-if="user?.preferences?.permissions >= 2" @click="makeEdit('set', f.incid)">
               Επεξεργασία Διαχειριστή
             </UButton>
           </Flex>
