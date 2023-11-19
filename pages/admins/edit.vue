@@ -13,6 +13,7 @@ const obj = {
   date: files.value[0].date,
   notes: files.value[0].description,
   category: files.value[0].category,
+  extraCategories: files.value[0].extraCategories ? files.value[0].extraCategories.split(',') : [],
   isPublic: files.value[0].isPublic === 1,
   isFeatured: files.value[0].isFeatured === 1
 }
@@ -28,17 +29,20 @@ const vmodel = useState("imgEditCurr", () => obj);
     <!--    <UButton color="red" @click="makeDelete" class="text-center">Διαγραφή εικόνας</UButton>-->
     <Flex column gap="3" items="center">
       <Flex row gap="3">
-        <UFormGroup label="Κατηγορία">
+        <UFormGroup label="Πρωτεύουσα κατηγορία">
           <USelectMenu searchable class="w-64" v-model="vmodel.category" :options="categories" value-attribute="name" option-attribute="description" placeholder="Επιλογή κατηγορίας" />
         </UFormGroup>
-        <UFormGroup label="Αρ. οχήματος">
-          <UInput v-model="vmodel.vehicle" placeholder="Ο πάροχος συμπληρώνεται αυτόματα" />
+        <UFormGroup label="Επιπλέον κατηγορίες">
+          <USelectMenu multiple searchable class="w-64" v-model="vmodel.extraCategories" :options="categories" value-attribute="name" option-attribute="description" placeholder="Επιλογή κατηγορίας" />
         </UFormGroup>
         <UFormGroup label="Γραμμή">
           <USelectMenu multiple searchable creatable class="w-64" v-model="vmodel.line" :options="lines" value-attribute="value" option-attribute="label" placeholder="Επιλογή γραμμής" />
         </UFormGroup>
       </Flex>
       <Flex row gap="3" class="items-center">
+        <UFormGroup label="Αρ. οχήματος">
+          <UInput v-model="vmodel.vehicle" placeholder="Ο πάροχος συμπληρώνεται αυτόματα" />
+        </UFormGroup>
         <UFormGroup label="Τοποθεσία">
           <UInput v-model="vmodel.location" />
         </UFormGroup>

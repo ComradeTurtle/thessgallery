@@ -1,11 +1,18 @@
 <script setup>
 const categories = useState("categories");
+
+categories.value.sort((a, b) => a.order - b.order);
+
+const localCategories = useState("localCategories", () => categories.value);
 const columns = [{
   key: 'name',
   label: 'Κωδικός κατηγορίας'
 }, {
   key: 'description',
   label: 'Όνομα κατηγορίας'
+}, {
+  key: 'order',
+  label: 'Σειρά εμφάνισης'
 }, {
   key: 'isVisible',
   label: 'Δημόσια κατηγορία'
@@ -18,23 +25,21 @@ const actionItems = (row) => [
       label: 'Επεξεργασία',
       icon: 'i-mdi-pencil-outline',
       click: () => makeCategoryEdit('select', row.name)
-    }, {
-    label: 'Εμφάνιση/Απόκρυψη',
-    icon: 'i-mdi-archive-edit-outline',
-    click: () => makeCategoryEdit('toggleDisplay', row.name)
-  }
+    }
   ], [
     {
       label: 'Διαγραφή',
       icon: 'i-mdi-archive-remove-outline',
-      click: () => makeCategoryEdit('delete', row.name)
+      click: () => makeCategoryEdit('delete', {incid: row.incid, name: row.name})
     }
   ]
 ]
 const obj = {
   name: null,
   description: null,
-  isVisible: false
+  isVisible: false,
+  order: null,
+  incid: -1
 };
 const vmodel = useState("categoryEditCurr", () => obj);
 </script>
@@ -62,14 +67,17 @@ const vmodel = useState("categoryEditCurr", () => obj);
         <UFormGroup label="Περιγραφή">
           <UInput v-model="vmodel.description" />
         </UFormGroup>
+        <UFormGroup label="Σειρά εμφάνισης">
+          <UInput v-model="vmodel.order" />
+        </UFormGroup>
         <UFormGroup>
           <UCheckbox v-model="vmodel.isVisible" label="Είναι δημόσια;" />
         </UFormGroup>
       </Flex>
     </Flex>
     <Flex row gap="2">
-      <UButton @click="makeCategoryEdit('edit')">Υποβολή επεξεργασίας</UButton>
-      <UButton @click="makeCategoryEdit('add')" color="green">Προσθήκη κατηγορίας</UButton>
+      <UButton @click="makeCategoryEdit('edit')" color="green">Αποθήκευση αλλαγών</UButton>
+      <UButton @click="makeCategoryEdit('add')" color="blue">Προσθήκη κατηγορίας</UButton>
     </Flex>
   </Flex>
 </template>
