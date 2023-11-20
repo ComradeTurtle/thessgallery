@@ -11,7 +11,7 @@ categories.value.forEach((c) => {
   const count = files.value.filter((v) => {
     const extraCategories = v.extraCategories || [];
 
-    return (v.category === c.name || extraCategories.includes(c.name) && v.isPublic);
+    return (v.category === c.name || extraCategories.includes(c.name)) && v.isPublic;
   }).length;
 
   i++;
@@ -34,7 +34,7 @@ categories.value.forEach((c) => {
         <nuxt-link :to="`/vehicle?category=${i.name}`">
           <div class="hvr-reveal rounded w-full">
             <NuxtImg class="max-h-80 h-full w-full object-cover" loading="lazy" placeholder="loading.jpg" :src="`https://eu2.contabostorage.com/987a186318de400dba43c3a946456795:${i.name}/${i.filename.split('.')[0]}-opti80.webp`" />
-            <div class="overlay text-center">
+            <div class="overlay text-center pt-1">
               <h1 class="text-xl">{{ i.description }}</h1>
               <h1 class="text-base">{{ i.count }} φωτογραφίες</h1>
             </div>

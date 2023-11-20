@@ -9,7 +9,7 @@ const categoryObj = categories.value.find((f) => f.name === category);
 const ourFiles = files.value.filter((f) => {
   const extraCategories = f.extraCategories || [];
 
-  return (f.category === category || extraCategories.includes(category)) && f.isPublic
+  return (f.category === category || extraCategories.includes(category)) && f.isPublic;
 });
 
 for (let i = 0; i < ourFiles.length; i++) {
