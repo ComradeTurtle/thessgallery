@@ -160,6 +160,21 @@ export const login = async () => {
     })
 }
 
+export const extractBucket = (v) => {
+    return v.split(':')[2].split('/')[0];
+}
+
+export const createUrl = (v) => {
+    let str = "";
+
+    const l = v.split('.');
+
+    for (let i = 0; i < l.length - 1; i++) {
+        i === l.length - 2 ? str += `${l[i]}` : str += `${l[i]}.`;
+    }
+
+    return `${str}-opti80.webp`;
+}
 export const turnstile = (response, type = 'login') => {
     fetch(`https://thg-api.comradeturtle.dev/v1/turnstile/verify`, {
         method: 'POST',

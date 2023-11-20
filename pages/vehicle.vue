@@ -51,18 +51,6 @@ const closeModal = (index) => {
 }
 console.log(vModalDisplay.value);
 
-const createUrl = (v) => {
-  let str = "";
-
-  const l = v.split('.');
-
-  for (let i = 0; i < l.length - 1; i++) {
-    i === l.length - 2 ? str += `${l[i]}` : str += `${l[i]}.`;
-  }
-
-  return `${str}-opti80.webp`;
-}
-
 </script>
 
 <template>
@@ -79,10 +67,10 @@ const createUrl = (v) => {
       </Flex>
 
     </UButton>
-    <h1 class="text-3xl pb-3">Τύπος οχήματος: {{ categoryObj.description }}</h1>
+    <h1 class="text-xl md:text-3xl md:pb-3 text-center">Τύπος οχήματος: {{ categoryObj.description }}</h1>
   </Flex>
 
-  <div class="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-8 px-6 py-8">
+  <div class="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-8 px-4 md:px-6 py-6 md:py-8">
     <div v-for="(f, index) in ourFiles" :key="index" class="mb-8">
       <div class="hvr-reveal rounded w-full" @click="openModal(index)">
         <NuxtImg placeholder="loading.jpg" loading="lazy" class="object-cover w-full" :src="`${createUrl(f.url)}`" />

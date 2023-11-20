@@ -21,14 +21,14 @@ const vmodel = useState("imgEditCurr", () => obj);
 </script>
 <template>
   <Flex column items="center" justify="center" class="gap-2 py-4">
-    <NuxtImg placeholder="../loading.jpg" class="max-h-[55vh]" :key="files[position].url" :src="files[position].url" />
-    <div class="inline-flex gap-2 items-baseline">
-      <p>Εικόνα</p> <UInput size="xs" class="w-12" v-model="position" /> <p>από {{ files.length }} ({{ files[position].filename }})</p>
+    <NuxtImg placeholder="../loading.jpg" class="max-h-[55vh] p-4 md:p-0" :key="files[position].url" :src="files[position].url" />
+    <div class="md:inline-flex text-center justify-center gap-2 items-baseline">
+      <p>Εικόνα</p> <UInput size="xs" class="w-full md:w-12" v-model="position" /> <p>από {{ files.length }} ({{ files[position].filename }}, Φάκελος S3: {{ extractBucket(files[position].url) }})</p>
     </div>
     <!--    <UCheckbox @click="makeEdit('edited')" v-model="isEdited" label="Εμφάνιση μόνο μη-επεξεργασμένων"></UCheckbox>-->
     <!--    <UButton color="red" @click="makeDelete" class="text-center">Διαγραφή εικόνας</UButton>-->
     <Flex column gap="3" items="center">
-      <Flex row gap="3">
+      <Flex column md-row gap="3">
         <UFormGroup label="Πρωτεύουσα κατηγορία">
           <USelectMenu searchable class="w-64" v-model="vmodel.category" :options="categories" value-attribute="name" option-attribute="description" placeholder="Επιλογή κατηγορίας" />
         </UFormGroup>
@@ -39,7 +39,7 @@ const vmodel = useState("imgEditCurr", () => obj);
           <USelectMenu multiple searchable creatable class="w-64" v-model="vmodel.line" :options="lines" value-attribute="value" option-attribute="label" placeholder="Επιλογή γραμμής" />
         </UFormGroup>
       </Flex>
-      <Flex row gap="3" class="items-center">
+      <Flex column md-row gap="3" class="items-center">
         <UFormGroup label="Αρ. οχήματος">
           <UInput v-model="vmodel.vehicle" placeholder="Ο πάροχος συμπληρώνεται αυτόματα" />
         </UFormGroup>

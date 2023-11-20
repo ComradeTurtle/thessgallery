@@ -47,7 +47,7 @@ const vmodel = useState("categoryEditCurr", () => obj);
 <template>
 
   <Flex column items="center" justify="center" gap="2" class="p-4">
-    <UTable :rows="categories" :columns="columns" :ui="{ th: { padding: 'px-1 py-1.5'}, td: { padding: 'px-2 py-1'}}">
+    <UTable :rows="categories" :columns="columns" class="overflow-x-auto w-full md:w-auto" :ui="{ th: { padding: 'px-1 py-1.5'}, td: { padding: 'px-2 py-1'}}">
       <template #isVisible-data="{ row }">
         <span>{{ row.isVisible === 1 ? 'Ναι' : 'Όχι' }}</span>
       </template>

@@ -21,7 +21,7 @@ const authItems = [
         <template #item="{ item }">
           <Flex column gap="4" class="p-2">
             <Flex column items="center" class="border-primary-500 rounded border-2 p-4" gap="2">
-              <h1 class="text-3xl font-bold">{{ item.title }}</h1>
+              <h1 class="text-3xl font-bold text-center">{{ item.title }}</h1>
             </Flex>
 
             <Flex column items="center" class="border-primary-500 rounded border-2 p-4">
