@@ -75,7 +75,7 @@ console.log(vModalDisplay.value);
       <div class="hvr-reveal rounded w-full" @click="openModal(index)">
         <NuxtImg placeholder="loading.jpg" loading="lazy" class="object-cover w-full" :src="`${createUrl(f.url)}`" />
       </div>
-      <UModal prevent-close v-model="vModalDisplay[index]" :ui="{ overlay: {background: 'bg-dark opacity-80 backdrop-blur-sm transition-all'}, width: 'sm:max-w-2xl'}">
+      <UModal v-model="vModalDisplay[index]" :ui="{ overlay: {background: 'bg-dark opacity-80 backdrop-blur-sm transition-all'}, width: 'sm:max-w-2xl'}">
         <Flex column justify="center" items="center" class="p-8">
           <NuxtImg :src="`${createUrl(f.url)}`" />
           <h1 v-html="createDesc(f)" class="text-xl text-center mt-4 mb-2 bg-gray-200 bg-opacity-5 border-1 border border-gray-500 rounded p-6"></h1>
