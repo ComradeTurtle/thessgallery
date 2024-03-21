@@ -46,7 +46,7 @@ const user = useState("user");
 <template>
   <Flex is="nav" row items="center" justify="between" gap="4" class="p-2">
     <NuxtLink v-if="!isMobileOrTablet" to="/" class=w-1/2>
-      <NuxtImg src="logo.png" class="w-1/3" />
+      <NuxtImg src="logonew.jpg" class="w-1/3" />
     </NuxtLink>
 
     <NuxtLink v-else to="/">

@@ -161,7 +161,7 @@ export const login = async () => {
 }
 
 export const extractBucket = (v) => {
-    return v.split(':')[2].split('/')[0];
+    return v.split('.dev/')[1].split('/')[0];
 }
 
 export const createUrl = (v) => {
