@@ -363,3 +363,11 @@ export const s3Import = async () => {
         else resolve(0);
     })
 }
+
+export const refreshFiles = async () => {
+    return new Promise(async (resolve, reject) => {
+        const files = useState("files");
+        files.value = await fetch(`https://thg-api.comradeturtle.dev/v1/files/list?listall=true`).then((res) => res.json());
+        resolve();
+    })
+}

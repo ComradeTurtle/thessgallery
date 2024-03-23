@@ -79,8 +79,8 @@ const s3modalType = useState('s3modalType', () => 3);
 
       <Flex column gap="3" items="center" justify="center" class="p-4" v-else-if="s3modalType === 1">
         <UIcon name="i-mdi-check-outline" class="text-6xl text-green-600" />
-        <h1 class="text-xl font-semibold text-center">Η εισαγωγή ξεκίνησε με επιτυχία. Συνήθως διαρκεί 1-3 λεπτά. Ανανεώστε την σελίδα για να εμφανιστούν τα νέα αρχεία.</h1>
-        <UButton color="purple" @click="s3modal = false; s3modalType = 3;">Κλείσιμο</UButton>
+        <h1 class="text-xl font-semibold text-center">Η εισαγωγή ξεκίνησε με επιτυχία. Συνήθως διαρκεί 1-3 λεπτά.</h1>
+        <UButton color="purple" :loading="s3loading" @click="s3loading = true; refreshFiles().then(() => {s3modal = false; s3modalType = 3;})">Ανανέωση αρχείων</UButton>
       </Flex>
 
       <Flex column gap="3" items="center" justify="center" class="p-4" v-else>
