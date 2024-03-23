@@ -351,3 +351,15 @@ export const makeCategoryEdit = async (action, v) => {
             break;
     }
 }
+
+export const s3Import = async () => {
+    return new Promise(async(resolve, reject) => {
+        const data = await fetch('https://thg-api.comradeturtle.dev/v1/files/imports3', {
+            method: 'POST',
+            credentials: 'include'
+        }).then((res) => res.json()).catch(() => resolve(0));
+
+        if (data.status === 'success') resolve(1);
+        else resolve(0);
+    })
+}

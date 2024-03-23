@@ -18,6 +18,9 @@ const obj = {
   isFeatured: files.value[0].isFeatured === 1
 }
 const vmodel = useState("imgEditCurr", () => obj);
+const s3modal = ref(false);
+const s3loading = ref(false);
+const s3modalType = useState('s3modalType', () => 3);
 </script>
 <template>
   <Flex column items="center" justify="center" class="gap-2 py-4">
@@ -41,7 +44,7 @@ const vmodel = useState("imgEditCurr", () => obj);
       </Flex>
       <Flex column md-row gap="3" class="items-center">
         <UFormGroup label="Αρ. οχήματος">
-          <UInput v-model="vmodel.vehicle" placeholder="Ο πάροχος συμπληρώνεται αυτόματα" />
+          <UInput v-model="vmodel.vehicle" />
         </UFormGroup>
         <UFormGroup label="Τοποθεσία">
           <UInput v-model="vmodel.location" />
@@ -63,5 +66,28 @@ const vmodel = useState("imgEditCurr", () => obj);
       <UButton @click="makeEdit('act')" color="purple">Επεξεργασία</UButton>
       <UButton @click="makeEdit('next')">Επόμενο</UButton>
     </Flex>
+    <UButton color="red" @click="s3modal = true;">Εισαγωγή εικόνων από S3</UButton>
+    <UModal v-model="s3modal">
+      <Flex column gap="3" items="center" justify="center" class="p-4" v-if="s3modalType === 3">
+        <UIcon name="i-mdi-alert-circle-outline" class="text-6xl text-red-600" />
+        <h1 class="text-xl font-semibold text-center">Βεβαιωθείτε πως οι εικόνες έχουν ανέβει ήδη στους αντίστοιχους φακέλους του S3.</h1>
+        <Flex row gap="4" justify="around">
+          <UButton color="red" @click="s3modal = false;">Ακύρωση</UButton>
+          <UButton color="green" :loading="s3loading"  @click="s3loading = true; s3Import().then((t) => {s3loading = false; s3modalType = t});">Εισαγωγή</UButton>
+        </Flex>
+      </Flex>
+
+      <Flex column gap="3" items="center" justify="center" class="p-4" v-else-if="s3modalType === 1">
+        <UIcon name="i-mdi-check-outline" class="text-6xl text-green-600" />
+        <h1 class="text-xl font-semibold text-center">Η εισαγωγή ξεκίνησε με επιτυχία. Συνήθως διαρκεί 1-3 λεπτά. Ανανεώστε την σελίδα για να εμφανιστούν τα νέα αρχεία.</h1>
+        <UButton color="purple" @click="s3modal = false; s3modalType = 3;">Κλείσιμο</UButton>
+      </Flex>
+
+      <Flex column gap="3" items="center" justify="center" class="p-4" v-else>
+        <UIcon name="i-mdi-alert-circle-outline" class="text-6xl text-red-600" />
+        <h1 class="text-xl font-semibold text-center">Η εισαγωγή απέτυχε. Παρακαλώ δοκιμάστε ξανά.</h1>
+        <UButton color="red" @click="s3modal = false; s3modalType = 3;">Κλείσιμο</UButton>
+      </Flex>
+    </UModal>
   </Flex>
 </template>
