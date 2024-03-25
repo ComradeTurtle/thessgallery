@@ -31,7 +31,7 @@ categories.value.forEach((c) => {
     <h1 class="text-xl text-center">Επιλέξτε έναν τύπο οχήματος για να προβάλλετε τις εικόνες του</h1>
     <Grid columns="1" rows="1" mdRows="3" mdColumns="3" class="gap-2 p-8 md:p-16">
       <div v-for="i in res">
-        <nuxt-link :to="`/vehicle?category=${i.name}`" @click="teleact({action: 'INTERACT_CLICK', data: {type: 'image', value: i.name}})">
+        <nuxt-link :to="`/vehicle?category=${i.name}`" @click="teleact({action: 'INTERACT_CLICK', data: {type: 'category', value: i.name}})">
           <div class="hvr-reveal rounded w-full">
             <NuxtImg class="max-h-80 h-full w-full object-cover" loading="lazy" placeholder="loading.jpg" :src="`${createUrl(i.url)}`" />
             <div class="overlay text-center pt-1">
