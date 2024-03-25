@@ -1,6 +1,5 @@
 export const uploadFile = async (state) => {
     const formData = new FormData();
-    console.log(this);
     formData.append('file', state.select.target.files[0]);
 
     // const data = await fetch('http://localhost:10029/upload', {
@@ -285,7 +284,6 @@ export const makeCategoryEdit = async (action, v) => {
         case ('edit'):
             localCategories.value.sort((a, b) => a.order - b.order);
             const localInx = localCategories.value.findIndex((c) => c.incid === vmodel.value.incid);
-            console.log(localInx);
             localCategories.value[localInx] = vmodel.value;
             await fetch('https://thg-api.comradeturtle.dev/v1/category/edit', {
                 method: 'POST',
@@ -369,5 +367,51 @@ export const refreshFiles = async () => {
         const files = useState("files");
         files.value = await fetch(`https://thg-api.comradeturtle.dev/v1/files/list?listall=true`).then((res) => res.json());
         resolve();
+    })
+}
+
+export const teleauth = async () => {
+    return new Promise(async (resolve, _reject) => {
+        const teleses = useState("teleses");
+
+        fetch(`https://telemetry.comradeturtle.dev/v1/hello`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: 'thessgallery'
+            })
+        }).then(async (res) => {
+            const r1 = await res.json();
+            teleses.value = r1.sid;
+            resolve();
+        }).catch(() => resolve());
+    })
+}
+
+export const teleact = async (payload) => {
+    return new Promise((resolve, _reject) => {
+        const teleses = useState("teleses");
+
+        fetch(`https://telemetry.comradeturtle.dev/v1/act`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'si': teleses.value
+            },
+            body: JSON.stringify({
+                project: 'thessgallery',
+                payload: payload
+            })
+        }).then((res) => {
+            if (res.ok) resolve();
+            else if (res.status === 403) {
+                teleauth().then(() => {
+                    teleact(payload);
+                    resolve();
+                });
+            }
+        }).catch(() => resolve());
     })
 }

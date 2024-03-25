@@ -13,15 +13,12 @@ const ourFiles = files.value.filter((f) => {
 });
 ourFiles.sort((a, b) => b.incid - a.incid);
 
-console.log(ourFiles);
-
 for (let i = 0; i < ourFiles.length; i++) {
   ourFiles[i].inx = i;
 }
 
 const createDesc = (file) => {
   let str = "false";
-  console.log(file);
   if (file.vehicle) {
     if (file.vehicle.includes(',')) str += `Αριθμοί Οχημάτων: ${file.vehicle}<br>`;
     else str += `Αριθμός Οχήματος: ${file.vehicle}<br>`;
@@ -44,16 +41,12 @@ const vModalCarousel = ref(null);
 const openModal = (index) => {
   vModalDisplay.value = Array(ourFiles.length).fill(false);
   vModalDisplay.value[index] = true;
-  console.log(vModalDisplay.value, index);
 }
 
 const closeModal = (index) => {
   vModalDisplay.value = Array(ourFiles.length).fill(false);
   vModalDisplay.value[index] = false;
-  console.log(vModalDisplay.value, index);
 }
-console.log(vModalDisplay.value);
-
 </script>
 
 <template>
@@ -75,7 +68,7 @@ console.log(vModalDisplay.value);
 
   <div class="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-8 px-4 md:px-6 py-6 md:py-8">
     <div v-for="(f, index) in ourFiles" :key="index" class="mb-8">
-      <div class="hvr-reveal rounded w-full" @click="openModal(index)">
+      <div class="hvr-reveal rounded w-full" @click="openModal(index); teleact({action: 'INTERACT_CLICK', data: {type: 'image', content: f}})">
         <NuxtImg placeholder="loading.jpg" loading="lazy" class="object-cover w-full" :src="`${createUrl(f.url)}`" />
       </div>
       <UModal v-model="vModalDisplay[index]" :ui="{ overlay: {background: 'bg-dark opacity-80 backdrop-blur-sm transition-all'}, width: 'sm:max-w-2xl'}">

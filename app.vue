@@ -13,7 +13,10 @@ useState("categories").value = data;
 useState("files").value = data2;
 useState("featured").value = data2.filter((f) => f.isFeatured === 1);
 
-onMounted(() => getUser().then(() => useState("awaitingResult").value = false));
+onMounted(() => getUser().then(() => {
+  useState("awaitingResult").value = false;
+  teleauth();
+}));
 
 useHead({
   titleTemplate: "Thesstrans - Gallery",
