@@ -14,6 +14,26 @@ useState("files").value = data2;
 useState("featured").value = data2.filter((f) => f.isFeatured === 1);
 
 onMounted(() => getUser().then(() => useState("awaitingResult").value = false));
+
+useHead({
+  titleTemplate: "Thesstrans - Gallery",
+  htmlAttrs: {
+    lang: "el",
+  },
+  link: [ 
+    {
+      rel: "icon",
+      type: "image/png",
+      href: "/favicon-32x32.png",
+    },
+    {
+      el: "icon",
+      type: "image/png",
+      href: "/favicon-16x16.png",
+    }
+  ]
+})
+
 </script>
 <template>
   <Nav />

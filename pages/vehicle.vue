@@ -11,6 +11,9 @@ const ourFiles = files.value.filter((f) => {
 
   return (f.category === category || extraCategories.includes(category)) && f.isPublic;
 });
+ourFiles.sort((a, b) => b.incid - a.incid);
+
+console.log(ourFiles);
 
 for (let i = 0; i < ourFiles.length; i++) {
   ourFiles[i].inx = i;
