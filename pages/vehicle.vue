@@ -57,13 +57,17 @@ const closeModal = (index) => {
         <h1 class="text-2xl">Επιστροφή</h1>
       </Flex>
 
-      <Flex router v-else gap="2" justify="center" items="center" :to="`https://thessgallery.comradeturtle.dev/vehicle?category=${category}`" target="_blank" external>
+      <Flex router v-else gap="2" justify="center" items="center" :to="`https://gallery.thesstrans.com/vehicle?category=${category}`" target="_blank" external>
           <Icon name="i-mdi-launch" size="2em" class="text-primary" />
           <h1 class="text-2xl">Άνοιγμα σε νέα καρτέλα</h1>
       </Flex>
 
     </UButton>
     <h1 class="text-xl md:text-3xl md:pb-3 text-center">Τύπος οχήματος: {{ categoryObj.description }}</h1>
+  </Flex>
+
+  <Flex justify="center" items="center" column gap="2" v-if="ourFiles.length === 0">
+    <h1 class="text-xl text-center">Δεν υπάρχουν διαθέσιμες εικόνες για αυτόν τον τύπο οχήματος (ακόμη).</h1>
   </Flex>
 
   <div class="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-8 px-4 md:px-6 py-6 md:py-8">
