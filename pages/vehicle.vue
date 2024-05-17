@@ -19,7 +19,6 @@ ourFiles.value = files.value.filter((f) => {
 let timeout;
 onMounted(() => {
   watch(vehicleSelected, () => {
-    console.log('vehicleSelected');
     if (timeout) clearTimeout(timeout);
     timeout = setTimeout(() => {
       if (vehicleSelected.value !== '') ourFiles.value = ourFiles.value.filter((f) => resolveRange(vehicleSelected.value).includes(f.vehicle));
