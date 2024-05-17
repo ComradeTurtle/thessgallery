@@ -2,6 +2,7 @@
 const route = useRoute();
 const data = await fetch('https://thg-api.comradeturtle.dev/v1/category/list').then((res) => res.json());
 const data2 = await fetch('https://thg-api.comradeturtle.dev/v1/files/list?listall=true').then((res) => res.json());
+const vehicleSelected = useState("vehicleSelected");
 
 data.sort((a, b) => a.order - b.order);
 

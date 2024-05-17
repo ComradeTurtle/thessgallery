@@ -2,6 +2,7 @@
 const categories = useState("categories");
 const files = useState("files");
 const featured = useState("featured");
+
 const res = [];
 let i = 0;
 
@@ -29,10 +30,11 @@ categories.value.forEach((c) => {
   <Flex column items="center">
     <h1 class="text-2xl text-center">Καλωσορίσατε στη γκαλερί του <NuxtLink class="font-semibold underline" external to="https://thesstrans.com">Thesstrans!</NuxtLink></h1>
     <h1 class="text-xl text-center">Επιλέξτε έναν τύπο οχήματος για να προβάλλετε τις εικόνες του</h1>
-    <Grid columns="1" rows="1" mdRows="3" mdColumns="3" class="gap-2 p-8 md:p-16">
+
+    <Grid columns="1" rows="1" mdRows="3" mdColumns="4" class="gap-2 p-4 md:p-8 px-8 md:px-16">
       <div v-for="i in res">
         <nuxt-link :to="`/vehicle?category=${i.name}`" @click="teleact({action: 'INTERACT_CLICK', data: {type: 'category', value: i.name}})">
-          <div class="hvr-reveal rounded w-full">
+          <div class="hvr-reveal rounded w-full h-full">
             <NuxtImg class="max-h-80 h-full w-full object-cover" loading="lazy" placeholder="loading.jpg" :src="`${createUrl(i.url)}`" />
             <div class="overlay text-center pt-1">
               <h1 class="text-xl">{{ i.description }}</h1>

@@ -1,20 +1,43 @@
 <script setup>
+import { resolveRange } from '~/utils';
+
 const route = useRoute();
 const user = useState("user");
 const files = useState("files");
 const categories = useState("categories");
 const category = route.query.category.split('-')[0];
 const isDirect = route.query.direct === "1";
+const vehicleSelected = useState("vehicleSelected");
 const categoryObj = categories.value.find((f) => f.name === category);
-const ourFiles = files.value.filter((f) => {
+const ourFiles = useState('ourFiles', () => []);
+ourFiles.value = files.value.filter((f) => {
   const extraCategories = f.extraCategories || [];
 
   return (f.category === category || extraCategories.includes(category)) && f.isPublic;
 });
-ourFiles.sort((a, b) => b.incid - a.incid);
+
+let timeout;
+onMounted(() => {
+  watch(vehicleSelected, () => {
+    console.log('vehicleSelected');
+    if (timeout) clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      if (vehicleSelected.value !== '') ourFiles.value = ourFiles.value.filter((f) => resolveRange(vehicleSelected.value).includes(f.vehicle));
+      else ourFiles.value = files.value.filter((f) => {
+        const extraCategories = f.extraCategories || [];
+
+        return (f.category === category || extraCategories.includes(category)) && f.isPublic;
+      });
+
+      ourFiles.value.sort((a, b) => b.incid - a.incid);
+    }, 500);
+  })
+})
+
+ourFiles.value.sort((a, b) => b.incid - a.incid);
 
 for (let i = 0; i < ourFiles.length; i++) {
-  ourFiles[i].inx = i;
+  ourFiles.value[i].inx = i;
 }
 
 const createDesc = (file) => {
@@ -66,8 +89,15 @@ const closeModal = (index) => {
     <h1 class="text-xl md:text-3xl md:pb-3 text-center">Τύπος οχήματος: {{ categoryObj.description }}</h1>
   </Flex>
 
+  <Flex column items="center" justify="center">
+    <UFormGroup label="Φίλτρο οχημάτων" description="Εισάγετε αρ. οχημάτων διαχωρισμένους με κόμμα" class="p-4 bg-primary-600/[0.6] rounded backdrop-opacity-50">
+      <UInput v-model="vehicleSelected" size="sm" placeholder="π.χ 512, 401-440.."></UInput>
+    </UFormGroup>
+  </Flex>
+
   <Flex justify="center" items="center" column gap="2" v-if="ourFiles.length === 0">
-    <h1 class="text-xl text-center">Δεν υπάρχουν διαθέσιμες εικόνες για αυτόν τον τύπο οχήματος (ακόμη).</h1>
+    <h1 class="text-xl text-center" v-if="!vehicleSelected">Δεν υπάρχουν διαθέσιμες εικόνες για αυτόν τον τύπο οχήματος (ακόμη).</h1>
+    <h1 v-else class="text-xl text-center">Δεν υπάρχουν διαθέσιμες εικόνες σε αυτή τη κατηγορία για τα επιλεγμένα οχήματα (ακόμη).</h1>
   </Flex>
 
   <div class="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-8 px-4 md:px-6 py-6 md:py-8">

@@ -243,6 +243,29 @@ export const handleAdminShow = (f, category) => {
     const file = files.value.filter((fi) => fi.filename === f.filename && fi.category === category);
 }
 
+export const resolveRange = (str) => {
+    const res = [];
+    str.replaceAll(' ', '').split(',').forEach((r) => {
+        if (r.includes('-')) {
+            for (let v = parseInt(r.split('-') [0]); v <= parseInt(r.split('-') [1]); v++) {
+                res.push(v.toString());
+            }
+        } else res.push(r.toString());
+    })
+    return res;
+}
+
+export const handleSelection = async () => {
+    return new Promise((resolve, reject) => {
+        const files = useState("files");
+        const fileDisplay = useState("fileDisplay");
+        const vehicleSelected = useState("vehicleSelected");
+
+        vehicleSelected.value !== '' ? fileDisplay.value = files.value.filter((f) => resolveRange(vehicleSelected.value).includes(f.vehicle)) : fileDisplay.value = files.value;
+        resolve();
+    })
+}
+
 export const makeCategoryEdit = async (action, v) => {
     const categories = useState("categories");
     const localCategories = useState("localCategories");
