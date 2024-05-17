@@ -79,7 +79,12 @@ const closeModal = (index) => {
         <Flex column justify="center" items="center" class="p-8">
           <NuxtImg :src="`${createUrl(f.url)}`" />
           <h1 v-html="createDesc(f)" class="text-xl text-center mt-4 mb-2 bg-gray-200 bg-opacity-5 border-1 border border-gray-500 rounded p-6"></h1>
-          <Flex row gap="2" justify="between">
+          <Flex column sm-row gap="2" justify="between" items="center" class="text-center">
+            <Flex router v-if="categoryObj.siteUrl" :to="categoryObj.siteUrl" target="_blank" external>
+              <UButton variant="soft" >
+                Πληροφορίες/Αριθμοί/Πολυμέσα
+              </UButton>
+            </Flex>
             <UButton variant="soft" @click="closeModal(index)">
               Κλείσιμο
             </UButton>
