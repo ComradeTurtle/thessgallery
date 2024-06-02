@@ -16,5 +16,5 @@ export default defineNuxtConfig({
 
   turnstile: {
     siteKey: '0x4AAAAAAANGxnLjALs96sVq'
-  }
+  },
 })
