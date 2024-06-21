@@ -1,16 +1,3 @@
-export const uploadFile = async (state) => {
-    const formData = new FormData();
-    formData.append('file', state.select.target.files[0]);
-
-    // const data = await fetch('http://localhost:10029/upload', {
-    //     method: 'POST',
-    //     body: formData
-    // })
-
-    // const pd = await data.json();
-    // console.log(pd);
-}
-
 export const makeEdit = async (action, v) => {
     const vmodel = useState("imgEditCurr");
     const pos = useState("imgEditPos");
@@ -44,7 +31,7 @@ export const makeEdit = async (action, v) => {
 
             vmodel.value.extraCategories = vmodel.value.extraCategories.join(',');
 
-            await fetch(`https://thg-api.comradeturtle.dev/v1/files/makeEdit`, {
+            await fetch(`${process.env.API_ROOT}/v1/files/makeEdit`, {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -58,7 +45,7 @@ export const makeEdit = async (action, v) => {
                 })
             });
 
-            files.value = await fetch(`https://thg-api.comradeturtle.dev/v1/files/list?listall=true`).then((res) => res.json());
+            files.value = await fetch(`${process.env.API_ROOT}/v1/files/list?listall=true`).then((res) => res.json());
             makeEdit('next');
             break;
         case ('next'):
@@ -113,7 +100,7 @@ export const login = async () => {
     loginButtonIcon.value = 'svg-spinners:ring-resize';
     loginButtonText.value = 'Δημιουργία συνεδρίας..';
 
-    fetch(`https://thg-api.comradeturtle.dev/v1/account/login`, {
+    fetch(`${process.env.API_ROOT}/v1/account/login`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -175,7 +162,7 @@ export const createUrl = (v) => {
     return `${str}-opti80.webp`;
 }
 export const turnstile = (response, type = 'login') => {
-    fetch(`https://thg-api.comradeturtle.dev/v1/turnstile/verify`, {
+    fetch(`${process.env.API_ROOT}/v1/turnstile/verify`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -197,7 +184,7 @@ export const getUser = () => {
         const session = sessionStorage.getItem("sessionObj");
         if (session && session !== "undefined") useState("user").value = JSON.parse(sessionStorage.getItem("sessionObj"));
 
-        fetch(`https://thg-api.comradeturtle.dev/v1/account/get`, {
+        fetch(`${process.env.API_ROOT}/v1/account/get`, {
             credentials: "include",
         })
             .then(async (res) => {
@@ -215,7 +202,7 @@ export const getUser = () => {
 };
 
 export const clearSession = (navigate) => {
-    fetch(`https://thg-api.comradeturtle.dev/v1/account/logout`, {
+    fetch(`${process.env.API_ROOT}/v1/account/logout`, {
         method: "POST",
         credentials: "include",
     })
@@ -282,7 +269,7 @@ export const makeCategoryEdit = async (action, v) => {
             };
             break;
         case ('add'):
-            await fetch('https://thg-api.comradeturtle.dev/v1/category/add', {
+            await fetch(`${process.env.API_ROOT}/v1/category/add`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -292,7 +279,7 @@ export const makeCategoryEdit = async (action, v) => {
                     ...vmodel.value
                 })
             });
-            categories.value = await fetch('https://thg-api.comradeturtle.dev/v1/category/list').then((res) => res.json());
+            categories.value = await fetch(`${process.env.API_ROOT}/v1/category/list`).then((res) => res.json());
             categories.value.sort((a, b) => a.order - b.order);
 
             localCategories.value = categories.value;
@@ -308,7 +295,7 @@ export const makeCategoryEdit = async (action, v) => {
             localCategories.value.sort((a, b) => a.order - b.order);
             const localInx = localCategories.value.findIndex((c) => c.incid === vmodel.value.incid);
             localCategories.value[localInx] = vmodel.value;
-            await fetch('https://thg-api.comradeturtle.dev/v1/category/edit', {
+            await fetch(`${process.env.API_ROOT}/v1/category/edit`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -316,7 +303,7 @@ export const makeCategoryEdit = async (action, v) => {
                 credentials: 'include',
                 body: JSON.stringify(localCategories.value)
             })
-            categories.value = await fetch('https://thg-api.comradeturtle.dev/v1/category/list').then((res) => res.json());
+            categories.value = await fetch(`${process.env.API_ROOT}/v1/category/list`).then((res) => res.json());
             categories.value.sort((a, b) => a.order - b.order);
 
             localCategories.value = categories.value;
@@ -329,7 +316,7 @@ export const makeCategoryEdit = async (action, v) => {
             };
             break;
         case ('toggleDisplay'):
-            await fetch('https://thg-api.comradeturtle.dev/v1/category/edit?mode=toggleDisplay', {
+            await fetch(`${process.env.API_ROOT}/v1/category/edit?mode=toggleDisplay`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -337,7 +324,7 @@ export const makeCategoryEdit = async (action, v) => {
                 credentials: 'include',
                 body: JSON.stringify({category: v})
             })
-            categories.value = await fetch('https://thg-api.comradeturtle.dev/v1/category/list').then((res) => res.json());
+            categories.value = await fetch(`${process.env.API_ROOT}/v1/category/list`).then((res) => res.json());
             categories.value.sort((a, b) => a.order - b.order);
 
             localCategories.value = categories.value;
@@ -350,7 +337,7 @@ export const makeCategoryEdit = async (action, v) => {
             };
             break;
         case ('delete'):
-            await fetch(`https://thg-api.comradeturtle.dev/v1/category/delete`, {
+            await fetch(`${process.env.API_ROOT}/v1/category/delete`, {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -358,7 +345,7 @@ export const makeCategoryEdit = async (action, v) => {
                 },
                 body: JSON.stringify(v)
             })
-            categories.value = await fetch('https://thg-api.comradeturtle.dev/v1/category/list').then((res) => res.json());
+            categories.value = await fetch(`${process.env.API_ROOT}/v1/category/list`).then((res) => res.json());
             categories.value.sort((a, b) => a.order - b.order);
 
             localCategories.value = categories.value;
@@ -375,7 +362,7 @@ export const makeCategoryEdit = async (action, v) => {
 
 export const s3Import = async () => {
     return new Promise(async(resolve, reject) => {
-        const data = await fetch('https://thg-api.comradeturtle.dev/v1/files/imports3', {
+        const data = await fetch(`${process.env.API_ROOT}/v1/files/imports3`, {
             method: 'POST',
             credentials: 'include'
         }).then((res) => res.json()).catch(() => resolve(0));
@@ -388,7 +375,7 @@ export const s3Import = async () => {
 export const refreshFiles = async () => {
     return new Promise(async (resolve, reject) => {
         const files = useState("files");
-        files.value = await fetch(`https://thg-api.comradeturtle.dev/v1/files/list?listall=true`).then((res) => res.json());
+        files.value = await fetch(`${process.env.API_ROOT}/v1/files/list?listall=true`).then((res) => res.json());
         resolve();
     })
 }
@@ -397,13 +384,13 @@ export const teleauth = async () => {
     return new Promise(async (resolve, _reject) => {
         const teleses = useState("teleses");
 
-        fetch(`https://telemetry.comradeturtle.dev/v1/hello`, {
+        fetch(`${process.env.TELEMETRY_ROOT}/v1/hello`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                name: 'thessgallery'
+                name: process.env.TELEMETRY_PROJECT
             })
         }).then(async (res) => {
             const r1 = await res.json();
@@ -417,14 +404,14 @@ export const teleact = async (payload) => {
     return new Promise((resolve, _reject) => {
         const teleses = useState("teleses");
 
-        fetch(`https://telemetry.comradeturtle.dev/v1/act`, {
+        fetch(`${process.env.TELEMETRY_ROOT}/v1/act`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'si': teleses.value
             },
             body: JSON.stringify({
-                project: 'thessgallery',
+                project: process.env.TELEMETRY_PROJECT,
                 payload: payload
             })
         }).then((res) => {

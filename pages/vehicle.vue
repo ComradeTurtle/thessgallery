@@ -1,6 +1,4 @@
 <script setup>
-import { resolveRange } from '~/utils';
-
 const route = useRoute();
 const user = useState("user");
 const files = useState("files");
