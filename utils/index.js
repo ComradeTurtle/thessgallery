@@ -2,6 +2,7 @@ export const makeEdit = async (action, v) => {
     const vmodel = useState("imgEditCurr");
     const pos = useState("imgEditPos");
     const files = useState("files");
+    const config = useRuntimeConfig();
 
     switch (action) {
         case ('set'):
@@ -31,7 +32,7 @@ export const makeEdit = async (action, v) => {
 
             vmodel.value.extraCategories = vmodel.value.extraCategories.join(',');
 
-            await fetch(`${process.env.API_ROOT}/v1/files/makeEdit`, {
+            await fetch(`${config.public.apiRoot}/v1/files/makeEdit`, {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -45,7 +46,7 @@ export const makeEdit = async (action, v) => {
                 })
             });
 
-            files.value = await fetch(`${process.env.API_ROOT}/v1/files/list?listall=true`).then((res) => res.json());
+            files.value = await fetch(`${config.public.apiRoot}/v1/files/list?listall=true`).then((res) => res.json());
             makeEdit('next');
             break;
         case ('next'):
@@ -84,6 +85,7 @@ export const login = async () => {
     const password = useState("user_password");
     const loginButtonText = useState("login_button_text");
     const loginButtonIcon = useState("login_button_icon");
+    const config = useRuntimeConfig();
 
     if (username.value === "" || !username.value || password.value === "" || !password.value) {
         loginButtonIcon.value = 'mdi:exclamation-thick';
@@ -100,7 +102,7 @@ export const login = async () => {
     loginButtonIcon.value = 'svg-spinners:ring-resize';
     loginButtonText.value = 'Δημιουργία συνεδρίας..';
 
-    fetch(`${process.env.API_ROOT}/v1/account/login`, {
+    fetch(`${config.public.apiRoot}/v1/account/login`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -162,7 +164,9 @@ export const createUrl = (v) => {
     return `${str}-opti80.webp`;
 }
 export const turnstile = (response, type = 'login') => {
-    fetch(`${process.env.API_ROOT}/v1/turnstile/verify`, {
+    const config = useRuntimeConfig();
+
+    fetch(`${config.public.apiRoot}/v1/turnstile/verify`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -180,11 +184,13 @@ export const turnstile = (response, type = 'login') => {
     })
 }
 export const getUser = () => {
+    const config = useRuntimeConfig();
+
     return new Promise((resolve) => {
         const session = sessionStorage.getItem("sessionObj");
         if (session && session !== "undefined") useState("user").value = JSON.parse(sessionStorage.getItem("sessionObj"));
 
-        fetch(`${process.env.API_ROOT}/v1/account/get`, {
+        fetch(`${config.public.apiRoot}/v1/account/get`, {
             credentials: "include",
         })
             .then(async (res) => {
@@ -202,7 +208,9 @@ export const getUser = () => {
 };
 
 export const clearSession = (navigate) => {
-    fetch(`${process.env.API_ROOT}/v1/account/logout`, {
+    const config = useRuntimeConfig();
+
+    fetch(`${config.public.apiRoot}/v1/account/logout`, {
         method: "POST",
         credentials: "include",
     })
@@ -257,6 +265,8 @@ export const makeCategoryEdit = async (action, v) => {
     const categories = useState("categories");
     const localCategories = useState("localCategories");
     const vmodel = useState("categoryEditCurr");
+    const config = useRuntimeConfig();
+
     switch (action) {
         case ('select'):
             const category = categories.value.find((c) => c.name === v);
@@ -269,7 +279,7 @@ export const makeCategoryEdit = async (action, v) => {
             };
             break;
         case ('add'):
-            await fetch(`${process.env.API_ROOT}/v1/category/add`, {
+            await fetch(`${config.public.apiRoot}/v1/category/add`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -279,7 +289,7 @@ export const makeCategoryEdit = async (action, v) => {
                     ...vmodel.value
                 })
             });
-            categories.value = await fetch(`${process.env.API_ROOT}/v1/category/list`).then((res) => res.json());
+            categories.value = await fetch(`${config.public.apiRoot}/v1/category/list`).then((res) => res.json());
             categories.value.sort((a, b) => a.order - b.order);
 
             localCategories.value = categories.value;
@@ -295,7 +305,7 @@ export const makeCategoryEdit = async (action, v) => {
             localCategories.value.sort((a, b) => a.order - b.order);
             const localInx = localCategories.value.findIndex((c) => c.incid === vmodel.value.incid);
             localCategories.value[localInx] = vmodel.value;
-            await fetch(`${process.env.API_ROOT}/v1/category/edit`, {
+            await fetch(`${config.public.apiRoot}/v1/category/edit`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -303,7 +313,7 @@ export const makeCategoryEdit = async (action, v) => {
                 credentials: 'include',
                 body: JSON.stringify(localCategories.value)
             })
-            categories.value = await fetch(`${process.env.API_ROOT}/v1/category/list`).then((res) => res.json());
+            categories.value = await fetch(`${config.public.apiRoot}/v1/category/list`).then((res) => res.json());
             categories.value.sort((a, b) => a.order - b.order);
 
             localCategories.value = categories.value;
@@ -316,7 +326,7 @@ export const makeCategoryEdit = async (action, v) => {
             };
             break;
         case ('toggleDisplay'):
-            await fetch(`${process.env.API_ROOT}/v1/category/edit?mode=toggleDisplay`, {
+            await fetch(`${config.public.apiRoot}/v1/category/edit?mode=toggleDisplay`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -324,7 +334,7 @@ export const makeCategoryEdit = async (action, v) => {
                 credentials: 'include',
                 body: JSON.stringify({category: v})
             })
-            categories.value = await fetch(`${process.env.API_ROOT}/v1/category/list`).then((res) => res.json());
+            categories.value = await fetch(`${config.public.apiRoot}/v1/category/list`).then((res) => res.json());
             categories.value.sort((a, b) => a.order - b.order);
 
             localCategories.value = categories.value;
@@ -337,7 +347,7 @@ export const makeCategoryEdit = async (action, v) => {
             };
             break;
         case ('delete'):
-            await fetch(`${process.env.API_ROOT}/v1/category/delete`, {
+            await fetch(`${config.public.apiRoot}/v1/category/delete`, {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -345,7 +355,7 @@ export const makeCategoryEdit = async (action, v) => {
                 },
                 body: JSON.stringify(v)
             })
-            categories.value = await fetch(`${process.env.API_ROOT}/v1/category/list`).then((res) => res.json());
+            categories.value = await fetch(`${config.public.apiRoot}/v1/category/list`).then((res) => res.json());
             categories.value.sort((a, b) => a.order - b.order);
 
             localCategories.value = categories.value;
@@ -361,8 +371,10 @@ export const makeCategoryEdit = async (action, v) => {
 }
 
 export const s3Import = async () => {
+    const config = useRuntimeConfig();
+
     return new Promise(async(resolve, reject) => {
-        const data = await fetch(`${process.env.API_ROOT}/v1/files/imports3`, {
+        const data = await fetch(`${config.public.apiRoot}/v1/files/imports3`, {
             method: 'POST',
             credentials: 'include'
         }).then((res) => res.json()).catch(() => resolve(0));
@@ -373,24 +385,28 @@ export const s3Import = async () => {
 }
 
 export const refreshFiles = async () => {
+    const config = useRuntimeConfig();
+
     return new Promise(async (resolve, reject) => {
         const files = useState("files");
-        files.value = await fetch(`${process.env.API_ROOT}/v1/files/list?listall=true`).then((res) => res.json());
+        files.value = await fetch(`${config.public.apiRoot}/v1/files/list?listall=true`).then((res) => res.json());
         resolve();
     })
 }
 
 export const teleauth = async () => {
+    const config = useRuntimeConfig();
+
     return new Promise(async (resolve, _reject) => {
         const teleses = useState("teleses");
 
-        fetch(`${process.env.TELEMETRY_ROOT}/v1/hello`, {
+        fetch(`${config.public.telemetryRoot}/v1/hello`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                name: process.env.TELEMETRY_PROJECT
+                name: config.public.telemetryProject
             })
         }).then(async (res) => {
             const r1 = await res.json();
@@ -401,17 +417,19 @@ export const teleauth = async () => {
 }
 
 export const teleact = async (payload) => {
+    const config = useRuntimeConfig();
+
     return new Promise((resolve, _reject) => {
         const teleses = useState("teleses");
 
-        fetch(`${process.env.TELEMETRY_ROOT}/v1/act`, {
+        fetch(`${config.public.telemetryRoot}/v1/act`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'si': teleses.value
             },
             body: JSON.stringify({
-                project: process.env.TELEMETRY_PROJECT,
+                project: config.public.telemetryProject,
                 payload: payload
             })
         }).then((res) => {

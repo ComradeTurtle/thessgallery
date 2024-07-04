@@ -9,10 +9,14 @@ export default defineNuxtConfig({
     icons: ['mdi', 'heroicons']
   },
   runtimeConfig: {
-    turnstile: {
-      secretKey: '0x4AAAAAAANGxvHox_SvEr27itNjWEDR-X0'
+    public: {
+        apiRoot: process.env.API_ROOT,
+        telemetryProject: process.env.TELEMETRY_PROJECT,
+        telemetryRoot: process.env.TELEMETRY_ROOT,
+        turnstileKey: process.env.TURNSTILE_SITEKEY,
+        turnstileSecret: process.env.TURNSTILE_SECRET
     }
-  },
+},
 
   turnstile: {
     siteKey: '0x4AAAAAAANGxnLjALs96sVq'
